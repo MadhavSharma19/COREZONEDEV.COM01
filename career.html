@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers | CoreZone.dev</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;
+  --white:#fff;
+  --dim:rgba(255,255,255,0.06);
+  --glow1:#a78bfa;
+  --glow2:#38bdf8;
+  --glow3:#f472b6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease}
+
+/* NOISE OVERLAY */
+body::before{
+  content:"";position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.4
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;width:100%;padding:18px 50px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,0.5);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.06);z-index:1000;
+}
+.logo{font-family:'Cinzel',serif;font-size:16px;letter-spacing:4px;font-weight:700}
+.menu{display:flex;gap:35px}
+.menu a{text-decoration:none;color:rgba(255,255,255,0.6);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:.3s;position:relative}
+.menu a::after{content:"";position:absolute;width:0;height:1px;background:var(--white);left:0;bottom:-4px;transition:.4s}
+.menu a:hover{color:#fff}
+.menu a:hover::after{width:100%}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:120px 20px 80px;
+  position:relative;overflow:hidden;
+}
+
+/* CINEMATIC BACKGROUND */
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(167,139,250,0.08) 0%, transparent 70%),
+             radial-gradient(ellipse 60% 40% at 20% 80%, rgba(56,189,248,0.06) 0%, transparent 60%),
+             radial-gradient(ellipse 40% 50% at 80% 20%, rgba(244,114,182,0.05) 0%, transparent 50%);
+}
+
+/* FLOATING LINES */
+.lines{position:absolute;inset:0;overflow:hidden}
+.lines span{
+  position:absolute;width:1px;background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.15), transparent);
+  animation:lineFloat 8s ease-in-out infinite;
+}
+.lines span:nth-child(1){left:15%;height:40%;top:20%;animation-delay:0s}
+.lines span:nth-child(2){left:35%;height:60%;top:10%;animation-delay:1.5s}
+.lines span:nth-child(3){left:65%;height:50%;top:15%;animation-delay:3s}
+.lines span:nth-child(4){left:85%;height:35%;top:30%;animation-delay:2s}
+
+@keyframes lineFloat{
+  0%,100%{opacity:0;transform:scaleY(0)}
+  50%{opacity:1;transform:scaleY(1)}
+}
+
+/* HERO TEXT */
+.hero-label{
+  font-size:11px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:25px;
+  animation:fadeSlideUp 1s ease .2s both;
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(36px,7vw,90px);
+  font-weight:900;line-height:1.05;
+  margin-bottom:30px;
+  background:linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.5) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeSlideUp 1s ease .4s both;
+}
+.hero-sub{
+  max-width:600px;font-size:15px;line-height:1.8;
+  color:rgba(255,255,255,0.55);
+  animation:fadeSlideUp 1s ease .6s both;
+  margin-bottom:80px;
+}
+
+/* SCROLL INDICATOR */
+.scroll-hint{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeIn 2s ease 2s both;
+}
+.scroll-hint span{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.4}
+.scroll-hint .line{width:1px;height:50px;background:linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);animation:scrollPulse 2s ease infinite}
+
+@keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* SKILLS SECTION */
+.skills-section{
+  padding:100px 40px;
+  max-width:1200px;margin:0 auto;
+}
+.section-label{
+  font-size:11px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);margin-bottom:15px;
+  opacity:0;transform:translateY(30px);transition:all .8s ease;
+}
+.section-label.visible{opacity:1;transform:translateY(0)}
+.section-title{
+  font-family:'Cinzel',serif;font-size:clamp(24px,4vw,48px);
+  margin-bottom:60px;
+  opacity:0;transform:translateY(30px);transition:all .8s ease .2s;
+}
+.section-title.visible{opacity:1;transform:translateY(0)}
+
+/* SKILL CARDS GRID */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+
+.skill-card{
+  position:relative;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:36px 30px;
+  cursor:pointer;
+  overflow:hidden;
+  transform-style:preserve-3d;
+  transition:transform .05s;
+  opacity:0;transform:translateY(40px);
+}
+.skill-card.visible{
+  animation:cardReveal .7s ease forwards;
+}
+@keyframes cardReveal{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* GLOW BORDER */
+.skill-card::before{
+  content:"";
+  position:absolute;inset:-1px;
+  border-radius:inherit;
+  background:linear-gradient(135deg, var(--glow1), var(--glow2), var(--glow3));
+  opacity:0;
+  transition:opacity .4s;
+  z-index:0;
+  padding:1px;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+}
+.skill-card:hover::before{opacity:1}
+
+/* INNER GLOW */
+.skill-card::after{
+  content:"";
+  position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(167,139,250,0.12) 0%, transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.skill-card:hover::after{opacity:1}
+
+.card-inner{position:relative;z-index:1}
+.card-icon{
+  font-size:28px;margin-bottom:18px;
+  display:block;
+  transition:transform .4s ease;
+}
+.skill-card:hover .card-icon{transform:scale(1.15) translateY(-3px)}
+.card-title{
+  font-family:'Cinzel',serif;font-size:16px;
+  letter-spacing:2px;margin-bottom:10px;
+  transition:color .3s;
+}
+.skill-card:hover .card-title{color:#a78bfa}
+.card-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7}
+
+.card-arrow{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:20px;font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  transition:all .3s;
+}
+.skill-card:hover .card-arrow{color:var(--glow1);gap:10px}
+
+/* SHADOW ON HOVER */
+.skill-card:hover{
+  box-shadow:0 20px 60px rgba(167,139,250,0.15), 0 0 0 1px rgba(167,139,250,0.2);
+}
+
+/* ROADMAP MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.9);
+  backdrop-filter:blur(20px);z-index:2000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{
+  width:90%;max-width:700px;max-height:85vh;overflow-y:auto;
+  background:rgba(10,10,10,0.95);
+  border:1px solid rgba(255,255,255,0.1);
+  padding:50px;
+  transform:translateY(30px) scale(0.97);
+  transition:all .4s cubic-bezier(.23,1,.32,1);
+  position:relative;
+}
+.modal-overlay.active .modal{transform:translateY(0) scale(1)}
+
+.modal-close{
+  position:absolute;top:20px;right:20px;
+  background:none;border:1px solid rgba(255,255,255,0.2);
+  color:#fff;width:36px;height:36px;border-radius:50%;
+  cursor:pointer;font-size:16px;transition:.3s;
+}
+.modal-close:hover{background:#fff;color:#000}
+
+.modal-label{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.modal-title{font-family:'Cinzel',serif;font-size:28px;margin-bottom:40px}
+
+.roadmap{position:relative;padding-left:30px}
+.roadmap::before{content:"";position:absolute;left:5px;top:0;width:1px;height:100%;background:rgba(255,255,255,0.1)}
+
+.roadmap-step{
+  position:relative;margin-bottom:35px;
+  opacity:0;transform:translateX(-20px);
+  transition:all .5s ease;
+}
+.roadmap-step.visible{opacity:1;transform:translateX(0)}
+.roadmap-step::before{
+  content:"";position:absolute;left:-28px;top:4px;
+  width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,var(--glow1),var(--glow2));
+}
+.step-phase{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--glow1);margin-bottom:5px}
+.step-title{font-size:16px;font-weight:600;margin-bottom:8px}
+.step-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
+.step-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.step-tag{font-size:11px;padding:3px 10px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5)}
+
+/* CTA */
+.cta-section{
+  padding:120px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.cta-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(167,139,250,0.08), transparent);
+}
+.cta-section h2{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,60px);margin-bottom:20px}
+.cta-section p{font-size:15px;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 50px}
+.btn-main{
+  display:inline-block;padding:16px 50px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;text-decoration:none;
+  font-size:12px;letter-spacing:3px;text-transform:uppercase;
+  position:relative;overflow:hidden;
+  transition:all .4s;
+}
+.btn-main::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--glow1),var(--glow2));
+  transform:translateX(-100%);transition:.4s;z-index:-1;opacity:.8;
+}
+.btn-main:hover::before{transform:translateX(0)}
+.btn-main:hover{border-color:transparent;box-shadow:0 0 40px rgba(167,139,250,0.3)}
+
+footer{
+  padding:30px;text-align:center;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+
+/* ANIMATIONS */
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2)}
+
+@media(max-width:768px){
+  nav{padding:15px 20px}
+  .menu{gap:20px}
+  .cards-grid{grid-template-columns:1fr}
+  .modal{padding:30px 25px}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="logo">COREZONE.DEV</div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="career.html">Career</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="lines">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-label">Opportunities at CoreZone.dev</div>
+  <h1>We Are Looking<br>For Future<br>Builders</h1>
+  <p class="hero-sub">At CoreZone.dev, we search for highly talented individuals with modern skills and a growth mindset. We believe in polishing your potential and shaping you for a better future.</p>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<section class="skills-section">
+  <div class="section-label">What We're Looking For</div>
+  <div class="section-title">Choose Your Path</div>
+
+  <div class="cards-grid" id="cardsGrid">
+
+    <div class="skill-card" data-skill="speaking">
+      <div class="card-inner">
+        <span class="card-icon">🎤</span>
+        <div class="card-title">Public Speaking</div>
+        <div class="card-desc">Command stages, inspire audiences and lead with your voice. Communication is a superpower.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="programming">
+      <div class="card-inner">
+        <span class="card-icon">💻</span>
+        <div class="card-title">Programming</div>
+        <div class="card-desc">Write code that solves real problems. From web to AI — your logic shapes the future.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="editing">
+      <div class="card-inner">
+        <span class="card-icon">🎬</span>
+        <div class="card-title">Video Editing</div>
+        <div class="card-desc">Cut, craft and create stories that move people. Visual storytelling for a digital world.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="writing">
+      <div class="card-inner">
+        <span class="card-icon">✍️</span>
+        <div class="card-title">Content Writing</div>
+        <div class="card-desc">Words shape worlds. Build narratives, drive engagement and make ideas unforgettable.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="design">
+      <div class="card-inner">
+        <span class="card-icon">🎨</span>
+        <div class="card-title">Designing</div>
+        <div class="card-desc">From UI to brand identity — design the visual language of tomorrow's products.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="communication">
+      <div class="card-inner">
+        <span class="card-icon">🔗</span>
+        <div class="card-title">Communication</div>
+        <div class="card-desc">The bridge between ideas and action. Great communicators make everything possible.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+    <div class="skill-card" data-skill="leadership">
+      <div class="card-inner">
+        <span class="card-icon">🚀</span>
+        <div class="card-title">Leadership</div>
+        <div class="card-desc">Guide teams, make decisions and build something bigger than yourself.</div>
+        <div class="card-arrow">View Roadmap <span>→</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <h2>Ready to Build<br>Your Future?</h2>
+  <p>Join CoreZone.dev and become part of something extraordinary. Your journey starts with a single click.</p>
+  <a href="#" class="btn-main">Register Now</a>
+</section>
+
+<footer>© 2026 CoreZone.dev — Build Your Future With Us</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-label" id="modalLabel">Roadmap</div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="roadmap" id="roadmapContent"></div>
+  </div>
+</div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a, button, .skill-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(167,139,250,0.6)'; });
+  el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; });
+});
+
+// 3D tilt effect
+document.querySelectorAll('.skill-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    const cx = r.width / 2, cy = r.height / 2;
+    const rx = (y - cy) / cy * -8;
+    const ry = (x - cx) / cx * 8;
+    card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(10px)`;
+    card.style.setProperty('--mx', (x / r.width * 100) + '%');
+    card.style.setProperty('--my', (y / r.height * 100) + '%');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.section-label, .section-title').forEach(el => observer.observe(el));
+
+const cards = document.querySelectorAll('.skill-card');
+cards.forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.1) + 's';
+  observer.observe(card);
+});
+
+// Roadmap data
+const roadmaps = {
+  speaking: {
+    title: 'Public Speaking',
+    steps: [
+      { phase: 'Phase 01', title: 'Foundation', desc: 'Build confidence through daily practice. Study great speeches — TED Talks, debates, commencement addresses. Learn body language basics.', tags: ['Mirror Practice', 'Voice Modulation', 'Storytelling'] },
+      { phase: 'Phase 02', title: 'Structure', desc: 'Master speech frameworks: PREP (Point-Reason-Example-Point), Pyramid Principle, Hook-Story-Offer. Learn audience analysis.', tags: ['PREP Method', 'Audience Reading', 'Script Writing'] },
+      { phase: 'Phase 03', title: 'Performance', desc: 'Join Toastmasters or speaking clubs. Participate in workshops and competitions. Get coached on stage presence and delivery.', tags: ['Toastmasters', 'Stage Presence', 'Q&A Handling'] },
+      { phase: 'Phase 04', title: 'Mastery', desc: 'Lead seminars, represent CoreZone.dev at events, mentor others and build your personal speaking brand.', tags: ['Leadership Talks', 'Brand Building', 'Mentorship'] },
+    ]
+  },
+  programming: {
+    title: 'Programming',
+    steps: [
+      { phase: 'Phase 01', title: 'Core Fundamentals', desc: 'Master one language deeply — Python or JavaScript. Understand data structures, algorithms, and problem-solving logic.', tags: ['Python / JS', 'DSA', 'Logic Building'] },
+      { phase: 'Phase 02', title: 'Build Projects', desc: 'Create real-world projects. Learn Git, APIs, databases. Build a portfolio showcasing what you can do, not just what you know.', tags: ['Git & GitHub', 'REST APIs', 'Portfolio'] },
+      { phase: 'Phase 03', title: 'Specialise', desc: 'Choose a domain: Web Dev, AI/ML, Mobile, Backend. Go deep. Contribute to open source. Learn system design basics.', tags: ['Web / AI / Mobile', 'Open Source', 'System Design'] },
+      { phase: 'Phase 04', title: 'Ship & Lead', desc: 'Build products for CoreZone.dev. Lead technical teams. Mentor juniors and contribute to technical vision.', tags: ['Product Building', 'Tech Leadership', 'Mentorship'] },
+    ]
+  },
+  editing: {
+    title: 'Video Editing',
+    steps: [
+      { phase: 'Phase 01', title: 'Tools & Basics', desc: 'Learn Premiere Pro or DaVinci Resolve. Understand timeline, cuts, transitions, and basic colour grading fundamentals.', tags: ['Premiere Pro', 'DaVinci', 'Timeline Basics'] },
+      { phase: 'Phase 02', title: 'Visual Storytelling', desc: 'Study pacing, emotion, and narrative rhythm. Learn sound design, music sync, and how to keep viewers hooked.', tags: ['Pacing', 'Sound Design', 'Emotion Mapping'] },
+      { phase: 'Phase 03', title: 'Motion & Effects', desc: 'Master After Effects for motion graphics and transitions. Create title sequences, animated text, and visual effects.', tags: ['After Effects', 'Motion Graphics', 'VFX Basics'] },
+      { phase: 'Phase 04', title: 'Lead Production', desc: 'Direct and edit full-scale productions for CoreZone.dev. Develop your signature editing style and mentor your team.', tags: ['Production Lead', 'Brand Videos', 'Mentorship'] },
+    ]
+  },
+  writing: {
+    title: 'Content Writing',
+    steps: [
+      { phase: 'Phase 01', title: 'Voice & Craft', desc: 'Read obsessively. Write every day. Find your unique voice. Learn the fundamentals of grammar, flow, and style.', tags: ['Daily Writing', 'Style Guide', 'Grammar Mastery'] },
+      { phase: 'Phase 02', title: 'Content Strategy', desc: 'Understand SEO basics, audience personas, and content calendars. Learn the difference between writing for humans and algorithms.', tags: ['SEO Basics', 'Audience Persona', 'Content Calendar'] },
+      { phase: 'Phase 03', title: 'Formats & Channels', desc: 'Master blogs, newsletters, social copy, scripts, and long-form. Adapt your voice to different platforms and purposes.', tags: ['Blogs', 'Scripts', 'Social Copy'] },
+      { phase: 'Phase 04', title: 'Content Leadership', desc: 'Own CoreZone.dev\'s editorial voice. Build and manage a content team. Shape the narrative of our brand.', tags: ['Editorial Strategy', 'Brand Voice', 'Team Lead'] },
+    ]
+  },
+  design: {
+    title: 'Designing',
+    steps: [
+      { phase: 'Phase 01', title: 'Design Principles', desc: 'Master typography, colour theory, hierarchy, grid systems, and visual balance. Study great design daily — collect references.', tags: ['Typography', 'Colour Theory', 'Grid Systems'] },
+      { phase: 'Phase 02', title: 'Tools Mastery', desc: 'Become proficient in Figma for UI/UX, Adobe Illustrator for vector work, Photoshop for image work.', tags: ['Figma', 'Illustrator', 'Photoshop'] },
+      { phase: 'Phase 03', title: 'UX & Systems', desc: 'Learn user research, wireframing, prototyping, and design systems. Design for accessibility and real user behavior.', tags: ['UX Research', 'Prototyping', 'Design Systems'] },
+      { phase: 'Phase 04', title: 'Creative Direction', desc: 'Lead CoreZone.dev\'s visual identity. Art direct campaigns, oversee design quality and build a world-class brand.', tags: ['Brand Identity', 'Art Direction', 'Creative Lead'] },
+    ]
+  },
+  communication: {
+    title: 'Communication',
+    steps: [
+      { phase: 'Phase 01', title: 'Active Listening', desc: 'Communication starts with listening. Develop deep listening skills, empathy, and the ability to understand before responding.', tags: ['Empathy', 'Active Listening', 'Body Language'] },
+      { phase: 'Phase 02', title: 'Written & Verbal', desc: 'Master professional email, clear verbal expression, meeting facilitation, and conflict resolution techniques.', tags: ['Professional Writing', 'Meeting Facilitation', 'Conflict Resolution'] },
+      { phase: 'Phase 03', title: 'Influence & Persuasion', desc: 'Learn principles of influence — Robert Cialdini\'s framework, negotiation tactics, and compelling storytelling.', tags: ['Influence', 'Negotiation', 'Persuasion'] },
+      { phase: 'Phase 04', title: 'Strategic Comms', desc: 'Manage CoreZone.dev\'s internal and external communication. Train teams and build a culture of clarity.', tags: ['Internal Comms', 'External PR', 'Culture Building'] },
+    ]
+  },
+  leadership: {
+    title: 'Leadership',
+    steps: [
+      { phase: 'Phase 01', title: 'Self-Leadership', desc: 'You cannot lead others until you lead yourself. Build discipline, emotional intelligence, self-awareness, and accountability.', tags: ['Emotional Intelligence', 'Discipline', 'Self-Awareness'] },
+      { phase: 'Phase 02', title: 'Team Dynamics', desc: 'Understand team psychology, motivation, delegation, and how to give feedback that inspires growth.', tags: ['Team Psychology', 'Delegation', 'Feedback Loops'] },
+      { phase: 'Phase 03', title: 'Vision & Strategy', desc: 'Learn to think long-term. Set clear goals, build roadmaps, communicate vision, and adapt strategies in real-time.', tags: ['Strategic Thinking', 'OKRs', 'Vision Setting'] },
+      { phase: 'Phase 04', title: 'Executive Leadership', desc: 'Lead CoreZone.dev divisions. Make high-stakes decisions, build culture, attract talent, and create lasting impact.', tags: ['Executive Decision-Making', 'Culture', 'Talent Building'] },
+    ]
+  }
+};
+
+// Modal
+const overlay = document.getElementById('modalOverlay');
+const modalTitle = document.getElementById('modalTitle');
+const roadmapContent = document.getElementById('roadmapContent');
+const modalClose = document.getElementById('modalClose');
+
+document.querySelectorAll('.skill-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const key = card.dataset.skill;
+    const data = roadmaps[key];
+    modalTitle.textContent = data.title;
+    roadmapContent.innerHTML = data.steps.map((step, i) => `
+      <div class="roadmap-step" style="transition-delay:${i * 0.1}s">
+        <div class="step-phase">${step.phase}</div>
+        <div class="step-title">${step.title}</div>
+        <div class="step-desc">${step.desc}</div>
+        <div class="step-tags">${step.tags.map(t => `<span class="step-tag">${t}</span>`).join('')}</div>
+      </div>
+    `).join('');
+    overlay.classList.add('active');
+    setTimeout(() => {
+      document.querySelectorAll('.roadmap-step').forEach(step => step.classList.add('visible'));
+    }, 100);
+  });
+});
+
+modalClose.addEventListener('click', () => overlay.classList.remove('active'));
+overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('active'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.remove('active'); });
+</script>
+</body>
+</html>

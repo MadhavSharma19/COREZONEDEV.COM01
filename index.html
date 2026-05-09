@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoreZone.dev</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#000;color:#fff;overflow-x:hidden}
+
+/* NAV */
+nav{
+position:fixed;top:0;width:100%;padding:15px 20px;
+display:flex;justify-content:space-between;align-items:center;
+background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);z-index:1000;
+}
+.logo{font-size:18px;font-weight:700;letter-spacing:2px}
+.menu{display:flex;gap:15px}
+.menu a{text-decoration:none;color:#fff;font-size:14px;position:relative}
+.menu a::after{content:"";position:absolute;width:0;height:2px;background:#fff;left:0;bottom:-4px;transition:.3s}
+.menu a:hover::after{width:100%}
+
+/* HERO */
+.hero{
+min-height:100vh;
+display:flex;align-items:center;justify-content:center;
+padding:100px 20px 40px;
+flex-direction:column;text-align:center;
+}
+.hero-text{max-width:600px}
+.hero-text h3{font-size:14px;opacity:.7;letter-spacing:2px}
+.hero-text h1{font-size:32px;margin:15px 0}
+.hero-text p{font-size:14px;opacity:.7}
+
+/* BUTTON */
+.btn{
+margin-top:50px; /* shifted down */
+padding:10px 25px;border:1px solid #fff;color:#fff;text-decoration:none;
+display:inline-block;transition:.3s
+}
+.btn:hover{background:#fff;color:#000}
+
+/* IMAGE */
+.hero-img{
+width:260px;height:260px;margin-top:40px;
+background:url('https://picsum.photos/500') center/cover no-repeat;
+border-radius:15px;transition:transform .2s ease-out
+}
+
+/* PARALLAX */
+.parallax{
+height:50vh;background:url('https://picsum.photos/1200/800?grayscale') center/cover fixed;
+display:flex;align-items:center;justify-content:center;text-align:center;padding:20px
+}
+.parallax h2{font-size:24px;background:rgba(0,0,0,0.7);padding:15px}
+
+footer{padding:20px;text-align:center;font-size:12px;opacity:.6}
+
+/* DESKTOP */
+@media(min-width:768px){
+nav{padding:20px 60px}
+.logo{font-size:22px}
+.menu{gap:30px}
+.menu a{font-size:16px}
+
+.hero{flex-direction:row;text-align:left;justify-content:space-between;padding:0 80px}
+.hero-text{max-width:50%}
+.hero-text h1{font-size:60px}
+.hero-text h3{font-size:18px}
+.hero-text p{font-size:16px}
+
+.btn{margin-top:60px}
+
+.hero-img{width:400px;height:400px;margin-top:0}
+.parallax h2{font-size:40px;padding:20px 40px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">COREZONE.DEV</div>
+<div class="menu">
+<a href="#">Home</a>
+<a href="about.html">About</a>
+<a href="career.html">Career</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-text">
+<h3>WORKING WITH FUTURE</h3>
+<h1>We Build The Next Digital Era</h1>
+<p>CoreZone.dev is shaping the future with cutting-edge technology, innovation, and design excellence.</p>
+<a href="career.html" class="btn">Join Us</a>
+</div>
+<div class="hero-img" id="heroImage"></div>
+</section>
+
+<section class="parallax">
+<h2>Innovate • Build • Scale</h2>
+</section>
+
+<footer>
+    <div>
+        v1.0.0  
+    </div>
+    <div>
+        © 2026 CoreZone.dev — All Rights Reserved
+    </div>
+</footer>
+
+<script>
+window.addEventListener("scroll",function(){
+const image=document.getElementById("heroImage");
+let scroll=window.scrollY;
+image.style.transform=`translateY(${scroll*0.15}px)`;
+});
+</script>
+
+</body>
+</html>

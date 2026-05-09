@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | CoreZone.dev</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;
+  --white:#fff;
+  --glow1:#a78bfa;
+  --glow2:#38bdf8;
+  --glow3:#f472b6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+
+.cursor{position:fixed;width:10px;height:10px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease}
+
+/* NOISE */
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.4}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;padding:18px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:1000}
+.logo{font-family:'Cinzel',serif;font-size:16px;letter-spacing:4px;font-weight:700}
+.menu{display:flex;gap:35px}
+.menu a{text-decoration:none;color:rgba(255,255,255,0.6);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:.3s;position:relative}
+.menu a::after{content:"";position:absolute;width:0;height:1px;background:var(--white);left:0;bottom:-4px;transition:.4s}
+.menu a:hover{color:#fff}
+.menu a:hover::after{width:100%}
+
+/* ── HERO IMAGE SECTION ── */
+.hero-img-section{
+  position:relative;
+  height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-img-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(167,139,250,0.06), transparent);
+}
+
+/* Big cinematic text behind */
+.hero-bg-text{
+  position:absolute;
+  font-family:'Cinzel',serif;
+  font-size:clamp(80px,18vw,220px);
+  font-weight:900;
+  letter-spacing:-.02em;
+  color:rgba(255,255,255,0.03);
+  white-space:nowrap;
+  user-select:none;
+  animation:slowDrift 20s ease-in-out infinite alternate;
+}
+@keyframes slowDrift{from{transform:translateX(-2%)}to{transform:translateX(2%)}}
+
+.hero-img-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:40px;
+  padding-top:80px;
+}
+.hero-img-label{
+  font-size:11px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  animation:fadeSlideUp 1s ease .2s both;
+}
+.hero-main-img{
+  width:clamp(220px,30vw,340px);
+  aspect-ratio:3/4;
+  object-fit:cover;
+  object-position:top;
+  border:1px solid rgba(255,255,255,0.1);
+  filter:grayscale(20%) contrast(1.05);
+  animation:fadeSlideUp 1.2s ease .4s both, floatImg 6s ease-in-out infinite;
+  position:relative;
+}
+@keyframes floatImg{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.hero-img-after{
+  position:absolute;
+  bottom:-10px;right:-10px;
+  width:100%;height:100%;
+  border:1px solid rgba(167,139,250,0.3);
+  pointer-events:none;
+}
+
+.img-frame{position:relative;display:inline-block}
+
+.hero-name{
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,4vw,42px);
+  letter-spacing:4px;font-weight:700;
+  text-align:center;
+  animation:fadeSlideUp 1s ease .6s both;
+}
+.hero-role{
+  font-size:13px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);
+  animation:fadeSlideUp 1s ease .7s both;
+  margin-top:-30px;
+}
+
+.hero-tagline{
+  max-width:500px;text-align:center;font-size:15px;
+  color:rgba(255,255,255,0.5);line-height:1.8;
+  animation:fadeSlideUp 1s ease .8s both;
+}
+
+/* SCROLL DOWN */
+.scroll-down{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeIn 2s ease 2s both;
+}
+.scroll-down span{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.3}
+.scroll-down .bar{width:1px;height:50px;background:linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);animation:barPulse 2s ease infinite}
+@keyframes barPulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ── ABOUT MISSION ── */
+.mission-section{
+  padding:120px 60px;
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.mission-left .overline{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:20px}
+.mission-left h2{font-family:'Cinzel',serif;font-size:clamp(28px,4vw,52px);line-height:1.1;margin-bottom:30px}
+.mission-right p{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.9;margin-bottom:20px}
+
+.stat-row{display:flex;gap:40px;margin-top:40px}
+.stat .num{font-family:'Cinzel',serif;font-size:36px;font-weight:700;background:linear-gradient(135deg,var(--glow1),var(--glow2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat .lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:4px}
+
+/* ── TIMELINE ── */
+.timeline-section{
+  padding:100px 40px;
+  background:rgba(255,255,255,0.015);
+  border-top:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.timeline-header{text-align:center;margin-bottom:80px}
+.timeline-header .overline{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:15px}
+.timeline-header h2{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,56px)}
+
+.timeline{position:relative;max-width:900px;margin:0 auto}
+.timeline::before{
+  content:"";position:absolute;left:50%;top:0;width:1px;height:100%;
+  background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0.15) 80%, transparent);
+  transform:translateX(-50%);
+}
+
+.t-item{
+  display:grid;grid-template-columns:1fr 80px 1fr;
+  align-items:start;margin-bottom:60px;
+  opacity:0;transition:all .8s ease;
+}
+.t-item.visible{opacity:1}
+.t-item:nth-child(odd) .t-left{text-align:right;padding-right:40px}
+.t-item:nth-child(odd) .t-right{padding-left:40px;opacity:.4;font-size:13px;color:rgba(255,255,255,0.4);padding-top:5px}
+.t-item:nth-child(even) .t-left{opacity:.4;font-size:13px;color:rgba(255,255,255,0.4);text-align:right;padding-right:40px;padding-top:5px}
+.t-item:nth-child(even) .t-right{padding-left:40px}
+
+.t-item:nth-child(odd){transform:translateX(-30px)}
+.t-item:nth-child(even){transform:translateX(30px)}
+.t-item.visible{transform:translateX(0)}
+
+.t-center{display:flex;flex-direction:column;align-items:center;gap:0}
+.t-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:linear-gradient(135deg,var(--glow1),var(--glow2));
+  flex-shrink:0;margin-top:5px;
+  box-shadow:0 0 20px rgba(167,139,250,0.5);
+}
+.t-year{font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-top:10px;color:#fff}
+.t-heading{font-family:'Cinzel',serif;font-size:18px;margin-bottom:8px}
+.t-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
+
+/* ── TEAM SECTION ── */
+.team-section{
+  padding:120px 40px;
+  text-align:center;
+}
+.team-section .overline{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:15px}
+.team-section h2{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,56px);margin-bottom:20px}
+.team-section .subtitle{font-size:15px;color:rgba(255,255,255,0.45);max-width:500px;margin:0 auto 80px}
+
+.team-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:30px;max-width:900px;margin:0 auto;
+}
+
+.team-card{
+  position:relative;
+  border:1px solid rgba(255,255,255,0.08);
+  overflow:hidden;
+  background:rgba(255,255,255,0.02);
+  transition:all .4s ease;
+  cursor:pointer;
+  opacity:0;transform:translateY(40px);
+}
+.team-card.visible{animation:cardReveal .8s ease forwards}
+@keyframes cardReveal{to{opacity:1;transform:translateY(0)}}
+
+/* Gradient glow border on hover */
+.team-card::before{
+  content:"";position:absolute;inset:-1px;
+  background:linear-gradient(135deg,var(--glow1),var(--glow2),var(--glow3));
+  opacity:0;transition:opacity .4s;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;
+}
+.team-card:hover::before{opacity:1}
+.team-card:hover{box-shadow:0 30px 80px rgba(167,139,250,0.15);transform:translateY(-8px)}
+
+.team-img-wrap{
+  position:relative;overflow:hidden;
+  aspect-ratio:4/5;
+}
+.team-img-wrap img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+  filter:grayscale(20%) contrast(1.05);
+  transition:transform .6s ease, filter .4s;
+}
+.team-card:hover .team-img-wrap img{
+  transform:scale(1.05);
+  filter:grayscale(0%) contrast(1.1);
+}
+
+/* overlay gradient */
+.team-img-wrap::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;
+  height:60%;
+  background:linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+.team-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:30px;z-index:2;
+  transform:translateY(10px);transition:transform .4s;
+}
+.team-card:hover .team-info{transform:translateY(0)}
+
+.team-name{font-family:'Cinzel',serif;font-size:20px;letter-spacing:2px;margin-bottom:5px}
+.team-role{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45)}
+.team-bio{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;margin-top:12px;max-height:0;overflow:hidden;transition:max-height .4s ease}
+.team-card:hover .team-bio{max-height:80px}
+.team-divider{width:30px;height:1px;background:linear-gradient(to right,var(--glow1),var(--glow2));margin:10px 0;transition:width .4s}
+.team-card:hover .team-divider{width:60px}
+
+/* ── FOOTER ── */
+footer{padding:30px;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);border-top:1px solid rgba(255,255,255,0.05)}
+
+/* ANIMATIONS */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2)}
+
+@media(max-width:768px){
+  nav{padding:15px 20px}.menu{gap:20px}
+  .mission-section{grid-template-columns:1fr;gap:40px;padding:80px 30px}
+  .timeline::before{left:20px}
+  .t-item{grid-template-columns:30px 1fr;grid-template-rows:auto auto}
+  .t-item:nth-child(odd) .t-left,.t-item:nth-child(even) .t-left{display:none}
+  .t-item:nth-child(odd) .t-right,.t-item:nth-child(even) .t-right{padding-left:20px;text-align:left;opacity:1;color:#fff}
+  .t-center{flex-direction:row;align-items:flex-start;padding-top:3px}
+  .t-year{display:none}
+  .team-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="logo">COREZONE.DEV</div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="career.html">Career</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- ── HERO IMAGE ── -->
+<section class="hero-img-section">
+  <div class="hero-img-bg"></div>
+  <div class="hero-bg-text">COREZONE</div>
+  <div class="hero-img-content">
+    <div class="hero-img-label">The Founder</div>
+    <div class="img-frame">
+      <img class="hero-main-img" src="me-removebg-preview-removebg-preview.png" alt="Madhav Sharma - Founder">
+      <div class="hero-img-after"></div>
+    </div>
+    <div class="hero-name">Madhav Sharma</div>
+    <div class="hero-role">Founder & Visionary</div>
+    <p class="hero-tagline">"Building CoreZone.dev to be the launchpad for the next generation of builders, thinkers, and creators."</p>
+  </div>
+  <div class="scroll-down"><span>Scroll</span><div class="bar"></div></div>
+</section>
+
+<!-- ── MISSION ── -->
+<section class="mission-section reveal-section">
+  <div class="mission-left">
+    <div class="overline">Our Purpose</div>
+    <h2>We Build Builders.</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="num">3+</div><div class="lbl">Years Active</div></div>
+      <div class="stat"><div class="num">∞</div><div class="lbl">Ambition</div></div>
+    </div>
+  </div>
+  <div class="mission-right">
+    <p>CoreZone.dev was born from a simple belief — that raw potential, when met with the right environment and mentorship, becomes extraordinary.</p>
+    <p>We are not just a company. We are a movement. A collective of builders, creators, and thinkers who refuse to be ordinary.</p>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline-section">
+  <div class="timeline-header">
+    <div class="overline">Since 2023</div>
+    <h2>Our Journey</h2>
+  </div>
+  <div class="timeline">
+
+    <div class="t-item">
+      <div class="t-left">
+        <div class="t-heading">Founded</div>
+        <div class="t-desc">CoreZone.dev was founded and we started working on multiple projects, establishing our core identity and mission.</div>
+      </div>
+      <div class="t-center">
+        <div class="t-dot"></div>
+        <div class="t-year">2023</div>
+      </div>
+      <div class="t-right">The Beginning</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-left">Innovation</div>
+      <div class="t-center">
+        <div class="t-dot"></div>
+        <div class="t-year">2024</div>
+      </div>
+      <div class="t-right">
+        <div class="t-heading">Innovation</div>
+        <div class="t-desc">Participated in Innovative Idea Clash and built creative solutions that put CoreZone.dev on the map.</div>
+      </div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-left">
+        <div class="t-heading">Team Built</div>
+        <div class="t-desc">We assembled a strong, diverse team of talented individuals united by a shared vision and relentless drive.</div>
+      </div>
+      <div class="t-center">
+        <div class="t-dot"></div>
+        <div class="t-year">2025</div>
+      </div>
+      <div class="t-right">The Collective</div>
+    </div>
+
+    <div class="t-item">
+      <div class="t-left">Expanding</div>
+      <div class="t-center">
+        <div class="t-dot"></div>
+        <div class="t-year">2026</div>
+      </div>
+      <div class="t-right">
+        <div class="t-heading">Expanding</div>
+        <div class="t-desc">Now expanding towards a bigger vision and future growth — building the next chapter of CoreZone.dev.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TEAM ── -->
+<section class="team-section">
+  <div class="overline">The People</div>
+  <h2>Meet Our Team</h2>
+  <p class="subtitle">The minds and hearts behind CoreZone.dev — building the future, together.</p>
+
+  <div class="team-grid">
+
+    <div class="team-card">
+      <div class="team-img-wrap">
+        <img src="me-removebg-preview-removebg-preview.png" alt="Madhav Sharma">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Madhav Sharma</div>
+        <div class="team-divider"></div>
+        <div class="team-role">Founder & CEO</div>
+        <div class="team-bio">Visionary leader and the driving force behind CoreZone.dev. Passionate about building future-ready talent.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-wrap">
+        <img src="Gemini_Generated_Image_hc6exchc6exchc6e.png" alt="Lakshita Nahar" style="object-position:center top;">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Lakshita Nahar</div>
+        <div class="team-divider"></div>
+        <div class="team-role">Co-Founder & COO</div>
+        <div class="team-bio">Strategic mind and operational backbone of CoreZone.dev. Dedicated to building a thriving, inclusive community.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>© 2026 CoreZone.dev — Build Your Future With Us</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 80);
+});
+document.querySelectorAll('a, .team-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(167,139,250,0.6)'; });
+  el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.t-item').forEach(el => obs.observe(el));
+document.querySelectorAll('.team-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.15) + 's';
+  obs.observe(card);
+});
+document.querySelectorAll('.mission-section, .mission-left, .mission-right').forEach(el => {
+  el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; el.style.transition = 'all .8s ease';
+  obs.observe(el);
+  el.addEventListener('transitionstart', () => {});
+});
+const obs2 = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }});
+}, {threshold:0.1});
+document.querySelectorAll('.mission-section > *').forEach(el => obs2.observe(el));
+</script>
+</body>
+</html>
